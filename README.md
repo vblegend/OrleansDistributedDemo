@@ -6,10 +6,9 @@ This project demonstrates a distributed application using .NET 9 and Orleans. It
 
 The solution is organized into the following projects:
 
-- `OrleansDistributedDemo.Interfaces`: Contains the grain interfaces
-- `OrleansDistributedDemo.Grains`: Contains the grain implementations
-- `OrleansDistributedDemo.Silo`: The silo host application
-- `OrleansDistributedDemo.Client`: The client application that connects to the Orleans cluster
+- `Interfaces`: Contains the grain interfaces
+- `Server`: The silo host application
+- `Client`: The client application that connects to the Orleans cluster
 
 ## Prerequisites
 
@@ -29,7 +28,7 @@ dotnet build
 Start the primary silo with default configuration:
 
 ```bash
-dotnet run --project OrleansDistributedDemo.Silo/OrleansDistributedDemo.Silo.csproj
+dotnet run --project Server/Server.csproj
 ```
 
 This will start a silo named "Silo1" with default ports:
@@ -41,13 +40,13 @@ This will start a silo named "Silo1" with default ports:
 Start a second silo with a different name and ports (in a new terminal):
 
 ```bash
-dotnet run --project OrleansDistributedDemo.Silo/OrleansDistributedDemo.Silo.csproj Silo2 11112 30001
+dotnet run --project Server/Server.csproj Silo2 11112 30001
 ```
 
 Start a third silo (in a new terminal):
 
 ```bash
-dotnet run --project OrleansDistributedDemo.Silo/OrleansDistributedDemo.Silo.csproj Silo3 11113 30002
+dotnet run --project Server/Server.csproj Silo3 11113 30002
 ```
 
 ### 3. Start the Client
@@ -55,13 +54,13 @@ dotnet run --project OrleansDistributedDemo.Silo/OrleansDistributedDemo.Silo.csp
 Start the client connecting to the primary silo (in a new terminal):
 
 ```bash
-dotnet run --project OrleansDistributedDemo.Client/OrleansDistributedDemo.Client.csproj
+dotnet run --project Client/Client.csproj
 ```
 
 To connect to a different silo, specify the gateway port:
 
 ```bash
-dotnet run --project OrleansDistributedDemo.Client/OrleansDistributedDemo.Client.csproj 30001
+dotnet run --project Client/Client.csproj 30001
 ```
 
 
