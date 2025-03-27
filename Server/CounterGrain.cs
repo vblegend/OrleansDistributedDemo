@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Orleans.Concurrency;
 using Orleans.Runtime;
 using OrleansDistributedDemo.Interfaces;
 
@@ -10,6 +11,10 @@ namespace OrleansDistributedDemo.Silo
     /// <summary>
     /// Implementation of the counter grain that maintains its state across different silos
     /// </summary>
+    //[PlacementStrategy(typeof(HashBasedPlacement))] // 基于 Grain ID 的哈希分布，Orleans 自动均衡。
+    //[PlacementStrategy(typeof(RandomPlacement))] // RandomPlacement（随机分布）
+    //[PlacementStrategy(typeof(PreferLocalPlacement))] // PreferLocalPlacement（优先本地 Silo）
+    // [StatelessWorker] // 让 Orleans 在 多个 Silo 中同时激活多个 Grains，适用于 高并发任务处理（如 API Gateway）。
     public class CounterGrain : Grain, ICounterGrain
     {
         private readonly ILogger<CounterGrain> _logger;
