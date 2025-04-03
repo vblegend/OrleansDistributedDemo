@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using StackExchange.Redis;
 
 
 namespace OrleansDistributedDemo.Silo
@@ -36,8 +37,8 @@ namespace OrleansDistributedDemo.Silo
                 var host = Host.CreateDefaultBuilder(args)
                     .UseOrleans(siloBuilder =>
                     {
+                      
                         siloBuilder
-
                         .AddMemoryGrainStorageAsDefault()
                             .UseLocalhostClustering(
                                     siloPort: siloPort,
@@ -63,6 +64,10 @@ namespace OrleansDistributedDemo.Silo
                             { 
                                 options.Port = siloPort + 1000; // Dashboard port is silo port + 1000
                                 options.HostSelf = true;
+                            }).AddRedisGrainStorage("Redis", options =>
+                            {
+                                options.ConfigurationOptions = ConfigurationOptions.Parse("127.0.0.1:6379,password=123456,db=12");
+                                options.DeleteStateOnClear = false;
                             });
                     })
                     .ConfigureServices(services =>
@@ -73,6 +78,7 @@ namespace OrleansDistributedDemo.Silo
                         });
                     })
                     .UseConsoleLifetime()
+                    
                     .Build();
 
                 await host.StartAsync();
